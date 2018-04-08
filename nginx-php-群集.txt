@@ -1,0 +1,32 @@
+upstream phpnode {
+	server 47.98.151.85:9000 weight=1;
+	server 47.104.199.84:9000 weight=1;
+}
+
+
+      location ~ \.php$ {
+            fastcgi_pass   	phpnode ;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+
+
+
+
+yum install nfs-utils rpcbind  -y 
+/etc/init.d/rpcbind start  
+/etc/init.d/nfs start 
+rpcinfo -p 47.106.122.215
+showmount -e 47.106.122.215
+
+
+
+vim /etc/exports
+
+/data/html 47.98.151.85/24(rw)
+/data/html 47.104.199.84/24(rw)
+
+
+mount 47.106.122.215:/data/html /data/html
+
